@@ -21,11 +21,11 @@ import (
 // Requirements:
 // The First few bytes must contain 0s
 
-const Difficulty = 18              // 18 is the number of leading 0s in the hash
+const Difficulty = 12
 
-type ProofOfWork struct {          
+type ProofOfWork struct {
 	Block  *Block
-	Target *big.Int             //target is the number that represents the requirement which gets derived from difficulty
+	Target *big.Int
 }
 
 func NewProof(b *Block) *ProofOfWork {
@@ -41,7 +41,7 @@ func (pow *ProofOfWork) InitData(nonce int) []byte {
 	data := bytes.Join(
 		[][]byte{
 			pow.Block.PrevHash,
-			pow.Block.Data,
+			pow.Block.HashTransactions(),
 			ToHex(int64(nonce)),
 			ToHex(int64(Difficulty)),
 		},
